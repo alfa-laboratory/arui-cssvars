@@ -1,6 +1,6 @@
 {
   "name": "arui-cssvars",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Helper for arui-feather css variables",
   "main": "index.js",
   "scripts": {
