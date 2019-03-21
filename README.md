@@ -22,5 +22,17 @@ How to use it?
 
 `node node_modules/arui-cssvars/index.js [dir]`
 
+or add script to package.json and run as npm script:
+
+```
+  // Add to package.json
+  "scripts": {
+    "cssvars": "cssvars"
+  }
+
+  // Run script
+  $ npm run cssvars
+```
+
 This command scans './src/' (or provided by `dir` argument) directory for .css files and try to suggest variables
 from installed version of `arui-feather` to use instead of according hard-coded numbers.
