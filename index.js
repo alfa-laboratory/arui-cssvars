@@ -34,31 +34,26 @@ const ROOT = process.argv[2] || 'src';
 
 const LF = '\n';
 const SEPARATOR = '|';
+const COLON = ':';
 
 function write({ file, lines, line, replace }) {
     const stream = process.stdout;
 
-    stream.write(LF + STYLE.GREEN + file + STYLE.CLEAR + LF);
+    const extraLines = 3;
 
-    if (lines[line - 3] !== undefined) {
-        stream.write(STYLE.YELLOW + (line - 2) + SEPARATOR + STYLE.CLEAR + lines[line - 3] + LF);
-    }
-    if (lines[line - 2] !== undefined) {
-        stream.write(STYLE.YELLOW + (line - 1) + SEPARATOR + STYLE.CLEAR + lines[line - 2] + LF);
-    }
-    if (lines[line - 1] !== undefined) {
-        stream.write(STYLE.YELLOW + line + SEPARATOR + STYLE.CLEAR + lines[line - 1] + LF);
-    }
-    stream.write(STYLE.GRAY + (line + 1) + SEPARATOR + lines[line] + STYLE.CLEAR + LF);
-    stream.write(STYLE.YELLOW + (line + 1) + SEPARATOR + STYLE.CLEAR + replace + LF);
-    if (lines[line + 1] !== undefined) {
-        stream.write(STYLE.YELLOW + (line + 2) + SEPARATOR + STYLE.CLEAR + lines[line + 1] + LF);
-    }
-    if (lines[line + 2] !== undefined) {
-        stream.write(STYLE.YELLOW + (line + 3) + SEPARATOR + STYLE.CLEAR + lines[line + 2] + LF);
-    }
-    if (lines[line + 3] !== undefined) {
-        stream.write(STYLE.YELLOW + (line + 4) + SEPARATOR + STYLE.CLEAR + lines[line + 3] + LF);
+    let totalLines = extraLines * 2 + 1;
+    let currentLine;
+
+    stream.write(LF + STYLE.GREEN + file + COLON + (line + 1) + STYLE.CLEAR + LF);
+
+    while (totalLines--) {
+        currentLine = line - totalLines + extraLines;
+        if (totalLines === extraLines) {
+            stream.write(STYLE.GRAY + (currentLine + 1) + SEPARATOR + lines[currentLine] + STYLE.CLEAR + LF);
+            stream.write(STYLE.YELLOW + (currentLine + 1) + SEPARATOR + STYLE.CLEAR + replace + LF);
+        } else if (lines[currentLine] !== undefined) {
+            stream.write(STYLE.YELLOW + (currentLine + 1) + SEPARATOR + STYLE.CLEAR + lines[currentLine] + LF)
+        }
     }
 }
 
@@ -133,6 +128,7 @@ function scanDir(filename, callback) {
 }
 
 scanDir(ROOT, function (file) {
+    let hasErrors = false; // Variable for process.exit(1); not yet used.
     if (file.slice(-4) === '.css') {
         fs.readFile(file, function (error, data) {
             if (!error) {
@@ -144,7 +140,8 @@ scanDir(ROOT, function (file) {
                 };
 
                 content.forEach(function (item, index) {
-                    findAndReplace(item, fileInfo, index);
+                    const errors = !!findAndReplace(item, fileInfo, index);
+                    hasErrors = hasErrors || errors; 
                 });
             }
         });

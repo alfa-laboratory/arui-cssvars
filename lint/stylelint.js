@@ -30,7 +30,7 @@ module.exports = stylelint.createPlugin(ruleName, function (enabled) {
     return function (root, result) {
         root.walkDecls(function (decl) {
             if (decl.prop in varsByProps) {
-                const substitution = find(' ' + decl.value, varsByProps[decl.prop]);
+                const substitution = find(decl.value, varsByProps[decl.prop]);
                 if (substitution) {
                     stylelint.utils.report({
                         result,

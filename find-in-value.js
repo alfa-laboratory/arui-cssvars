@@ -1,6 +1,7 @@
 const BORDERS = {
     ' ': null,
-    ';': null
+    ';': null,
+    'undefined': null
 };
 
 function findInValue(haystack, needle, fromIndex) {
