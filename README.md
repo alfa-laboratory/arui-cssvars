@@ -36,3 +36,21 @@ or add script to package.json and run as npm script:
 
 This command scans './src/' (or provided by `dir` argument) directory for .css files and try to suggest variables
 from installed version of `arui-feather` to use instead of according hard-coded numbers.
+
+PlugIn for Stylelint
+--------------------
+
+Now we have own Stylelint rule (`stylelint` is required as project dependency)!
+
+Just add to your `.stylelintrc` or `stylelint.config.js`
+
+```
+    rules: {
+        'arui-cssvars/use-variables': true
+    },
+    plugins: [
+        './node_modules/arui-cssvars/lint/stylelint.js'
+    ]
+
+```
+And your IDE will suggest you appropriate variables instead of plain values!
