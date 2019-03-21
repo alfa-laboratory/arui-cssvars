@@ -47,12 +47,12 @@ function write({ file, lines, line, replace }) {
     stream.write(LF + STYLE.GREEN + file + COLON + (line + 1) + STYLE.CLEAR + LF);
 
     while (totalLines--) {
-        currentLine = line - totalLines + extraLines;
+        currentLine = line - totalLines + extraLines + 1;
         if (totalLines === extraLines) {
-            stream.write(STYLE.GRAY + (currentLine + 1) + SEPARATOR + lines[currentLine] + STYLE.CLEAR + LF);
-            stream.write(STYLE.YELLOW + (currentLine + 1) + SEPARATOR + STYLE.CLEAR + replace + LF);
+            stream.write(STYLE.GRAY + (currentLine) + SEPARATOR + lines[currentLine - 1] + STYLE.CLEAR + LF);
+            stream.write(STYLE.YELLOW + (currentLine) + SEPARATOR + STYLE.CLEAR + replace + LF);
         } else if (lines[currentLine] !== undefined) {
-            stream.write(STYLE.YELLOW + (currentLine + 1) + SEPARATOR + STYLE.CLEAR + lines[currentLine] + LF)
+            stream.write(STYLE.YELLOW + (currentLine) + SEPARATOR + STYLE.CLEAR + lines[currentLine - 1] + LF)
         }
     }
 }
@@ -127,10 +127,14 @@ function scanDir(filename, callback) {
     });
 }
 
+let totalFiles = 0;
+
 scanDir(ROOT, function (file) {
     let hasErrors = false; // Variable for process.exit(1); not yet used.
     if (file.slice(-4) === '.css') {
+        ++totalFiles;
         fs.readFile(file, function (error, data) {
+            --totalFiles;
             if (!error) {
                 const content = data.toString().split('\n');
                 const fileInfo = {
@@ -143,6 +147,10 @@ scanDir(ROOT, function (file) {
                     const errors = !!findAndReplace(item, fileInfo, index);
                     hasErrors = hasErrors || errors; 
                 });
+
+                if (totalFiles === 0 && hasErrors) {
+                  process.exit(1);
+                }
             }
         });
     }

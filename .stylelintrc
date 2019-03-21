@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "arui-cssvars/use-variables": true
+  },
+  plugins: [
+    "./lint/stylelint.js"
+  ]
+}

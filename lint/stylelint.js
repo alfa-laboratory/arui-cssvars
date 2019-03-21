@@ -5,7 +5,7 @@ const findInValue = require('../find-in-value.js');
 const ruleName = 'arui-cssvars/use-variables';
 const messages = stylelint.utils.ruleMessages(ruleName, {
     expected: function (variable, value) {
-        return 'Use variable var(' + variable + ') instead of plain value ' + value;
+        return `Use variable 'var(${variable})' instead of plain value '${value}'`;
     }
 });
 
