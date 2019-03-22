@@ -1,6 +1,6 @@
 const stylelint = require('stylelint');
 const varsByProps = require('../variables.js');
-const findInValue = require('../find-in-value.js');
+const findInValue = require('../utils.js').findInValue;
 
 const ruleName = 'arui-cssvars/use-variables';
 const messages = stylelint.utils.ruleMessages(ruleName, {
