@@ -24,7 +24,9 @@ function find(value, group) {
 
 module.exports = stylelint.createPlugin(ruleName, function (enabled) {
     if (!enabled) {
-        return;
+        return function () {
+            return null; 
+        }
     }
 
     return function (root, result) {

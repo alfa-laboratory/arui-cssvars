@@ -3,4 +3,6 @@
   padding-top: var(--gap-xs);
   padding: 12px;
   margin-left: 12px 16px 20px 15px;
+  /* stylelint-disable-next-line arui-cssvars/use-variables */
+  margin-right: 20px;
 }
