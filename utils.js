@@ -38,9 +38,9 @@ function getVarsFromCSS(...args) {
                 regMatch = VAR_RE.exec(gaps);
             }
         } catch (error) {
-            if (error.code === 'ENOENT') {
+            if (error.code === 'ENOENT' || error.code === 'MODULE_NOT_FOUND') {
                 process.stderr.write(
-                    `${STYLE.GREEN}WARNING: ${STYLE.CLEAR}Module not found: ${STYLE.RED}${args[index]}${STYLE.CLEAR}\n`
+                    `${STYLE.GREEN}WARNING: ${STYLE.CLEAR}Module not found: ${STYLE.RED}${FEATHER_PACKAGE_NAME}/${args[index]}${STYLE.CLEAR}\n`
                 );
             } else {
                 console.log(error);
