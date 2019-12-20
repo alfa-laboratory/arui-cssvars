@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const STYLE = require('./format.js');
 
-const VARS_DIR = './node_modules/arui-feather/';
+const FEATHER_PACKAGE_NAME = 'arui-feather';
 const VAR_RE = /(?:^|\n)\s+(--[-\w]+):\s*(.+?);/g;
 const STYLE_RE = /^(\s+)([\w-]+):(.+)$/;
 
@@ -30,7 +30,7 @@ function getVarsFromCSS(...args) {
 
     for (let index = 0; index < args.length; ++index) {
         try {
-            const gaps = fs.readFileSync(VARS_DIR + args[index]).toString();
+            const gaps = fs.readFileSync(require.resolve(`${FEATHER_PACKAGE_NAME}/${args[index]}`)).toString();
 
             regMatch = VAR_RE.exec(gaps);
             while (regMatch) {
