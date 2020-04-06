@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const fs = require('fs');
-const varsByProps = require('./variables.js');
+const getVarsByProps = require('./variables.js');
 const findInValue = require('./utils.js').findInValue;
 const STYLE = require('./format.js');
 // const rl = require('readline');
@@ -78,7 +78,7 @@ function replaceRecurcively(file, line, hay, needle, variables, fromIndex = 0) {
     return result;
 }
 
-function findAndReplace(item, file, index) {
+function findAndReplace(item, file, index, varsByProps) {
     const regMatch = STYLE_RE.exec(item);
     const vars = regMatch && varsByProps[regMatch[2]];
 
@@ -128,6 +128,8 @@ function scanDir(filename, callback) {
 module.exports = function (directory) {
     let totalFiles = 0;
 
+    const varsByProps = getVarsByProps();
+
     scanDir(directory, function (file) {
         let hasErrors = false;
         if (file.slice(-4) === '.css') {
@@ -143,7 +145,7 @@ module.exports = function (directory) {
                     };
 
                     content.forEach(function (item, index) {
-                        const errors = !!findAndReplace(item, fileInfo, index);
+                        const errors = !!findAndReplace(item, fileInfo, index, varsByProps);
                         hasErrors = hasErrors || errors; 
                     });
 

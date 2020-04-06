@@ -1,5 +1,5 @@
 const stylelint = require('stylelint');
-const varsByProps = require('../variables.js');
+const getVarsByProps = require('../variables.js');
 const findInValue = require('../utils.js').findInValue;
 
 const ruleName = 'arui-cssvars/use-variables';
@@ -25,9 +25,11 @@ function find(value, group) {
 module.exports = stylelint.createPlugin(ruleName, function (enabled) {
     if (!enabled) {
         return function () {
-            return null; 
+            return null;
         }
     }
+
+    const varsByProps = getVarsByProps();
 
     return function (root, result) {
         root.walkDecls(function (decl) {
