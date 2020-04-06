@@ -9,7 +9,7 @@ module.exports = function getVarsByProps () {
   };
 
   /* eslint-disable quote-props */
-  const varsByProps = {
+  return {
       'margin': [vars.gaps],
       'margin-top': [vars.gaps],
       'margin-right': [vars.gaps],
