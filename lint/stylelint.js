@@ -22,7 +22,7 @@ function find(value, group) {
     }
 }
 
-module.exports = stylelint.createPlugin(ruleName, function (enabled) {
+module.exports = stylelint.createPlugin(ruleName, function (enabled, _, context) {
     if (!enabled) {
         return function () {
             return null;
@@ -36,6 +36,10 @@ module.exports = stylelint.createPlugin(ruleName, function (enabled) {
             if (decl.prop in varsByProps) {
                 const substitution = find(decl.value, varsByProps[decl.prop]);
                 if (substitution) {
+                    if (context.fix) {
+                        decl.value = decl.value.replace(substitution.value, `var(${substitution.variable})`);
+                        return;
+                    }
                     stylelint.utils.report({
                         result,
                         ruleName,
